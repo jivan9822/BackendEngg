@@ -2,6 +2,7 @@ const AppError = require('../Error/AppError');
 const { CatchAsync } = require('../Error/CatchAsync');
 const Customer = require('../Models/CustomerModel');
 
+// CREATE NEW CUSTOMER CONTROLLER
 exports.createNewCustomer = CatchAsync(async (req, res, next) => {
   const customer = await Customer.create(req.body);
   res.status(201).json({
@@ -11,6 +12,8 @@ exports.createNewCustomer = CatchAsync(async (req, res, next) => {
     },
   });
 });
+
+// GET ALL CUSTOMERS CONTROLLER
 exports.getAllCustomers = CatchAsync(async (req, res, next) => {
   const customers = await Customer.find();
   if (!customers.length) {
@@ -24,6 +27,8 @@ exports.getAllCustomers = CatchAsync(async (req, res, next) => {
     },
   });
 });
+
+// DELETE CUSTOMER CONTROLLER
 exports.deleteCustomer = CatchAsync(async (req, res, next) => {
   const customer = await Customer.findByIdAndUpdate(
     req.body.custId,

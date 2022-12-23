@@ -67,6 +67,7 @@ const customerSchema = mongoose.Schema({
   },
 });
 
+// THIS WILL HIDE ALL INACTIVE CUSTOMERS IN QUERY
 customerSchema.pre(/^find/, function (next) {
   this.find({ status: 'ACTIVE' });
   next();

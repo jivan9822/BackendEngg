@@ -40,11 +40,13 @@ const cardSchema = mongoose.Schema({
   },
 });
 
+// THIS WILL HIDE ALL INACTIVE CARDS
 cardSchema.pre(/^find/, function (next) {
   this.find({ status: 'ACTIVE' });
   next();
 });
 
+// THIS WILL HANDLE CUSTOMER NAME IN CART NAME FIELD
 cardSchema.pre('save', async function (next) {
   const customer = await Customer.findById(this.customerID);
   if (!customer) {
