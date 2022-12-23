@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const npmValid = require('validator');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 
 const customerSchema = mongoose.Schema({
   // firstName string
@@ -58,7 +58,7 @@ const customerSchema = mongoose.Schema({
   // customerID string UUID
   customerID: {
     type: String,
-    default: uuidv4(),
+    default: crypto.randomUUID(),
   },
   // status string ACTIVE / INACTIVE
   status: {
