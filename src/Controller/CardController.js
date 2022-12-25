@@ -2,6 +2,7 @@ const AppError = require('../Error/AppError');
 const { CatchAsync } = require('../Error/CatchAsync');
 const Card = require('../Models/CardModel');
 const Customer = require('../Models/CustomerModel');
+const APIFeature = require('../Utils/APIFeature');
 
 // CREATE NEW CARD CONTROLLER
 exports.createNewCard = CatchAsync(async (req, res, next) => {
@@ -17,7 +18,13 @@ exports.createNewCard = CatchAsync(async (req, res, next) => {
 
 // GET ALL CARD CONTROLLER
 exports.getAllCard = CatchAsync(async (req, res, next) => {
-  const cards = await Card.find();
+  const query = new APIFeature(Card.find(), req.query)
+    .filter()
+    .limitFields()
+    .pagination()
+    .sort();
+
+  const cards = await query.query;
   if (!cards.length) {
     return next(new AppError(`No Cards found!`, 404));
   }

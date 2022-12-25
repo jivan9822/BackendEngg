@@ -1,6 +1,7 @@
 const AppError = require('../Error/AppError');
 const { CatchAsync } = require('../Error/CatchAsync');
 const Customer = require('../Models/CustomerModel');
+const APIFeature = require('../Utils/APIFeature');
 
 // CREATE NEW CUSTOMER CONTROLLER
 exports.createNewCustomer = CatchAsync(async (req, res, next) => {
@@ -13,9 +14,14 @@ exports.createNewCustomer = CatchAsync(async (req, res, next) => {
   });
 });
 
-// GET ALL CUSTOMERS CONTROLLER
 exports.getAllCustomers = CatchAsync(async (req, res, next) => {
-  const customers = await Customer.find();
+  const query = new APIFeature(Customer.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .pagination();
+  const customers = await query.query;
+  // const customers = await Customer.find();
   if (!customers.length) {
     return next(new AppError(`No customers found!`, 404));
   }
